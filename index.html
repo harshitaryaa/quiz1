@@ -323,14 +323,13 @@
         bgMusic.volume = 0.5; // 50% volume
 
         // Start music after intro animation
-        setTimeout(() => {
-            bgMusic.play().catch(() => {
-                // If autoplay is blocked, play on first user interaction
-                window.addEventListener("click", () => {
-                    bgMusic.play();
-                }, { once: true });
-            });
-        }, 4000);
+        // Mobile Friendly Music Start
+document.addEventListener("click", function startMusic() {
+    bgMusic.play();
+    document.removeEventListener("click", startMusic);
+});
+
     </script>
 </body>
+
 </html>
