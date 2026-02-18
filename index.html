@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>question</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .intro {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        .letter-box {
+            width: 200px;
+            height: 150px;
+            background: #ff69b4;
+            border-radius: 10px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: openBox 2s ease-in-out 1s forwards;
+        }
+        @keyframes openBox {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        .letter {
+            position: absolute;
+            font-size: 2em;
+            color: #fff;
+            animation: flyOut 3s ease-in-out forwards;
+        }
+        @keyframes flyOut {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            20% { opacity: 1; scale(1); }
+            100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 1; }
+        }
+        .app-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        h1 {
+            color: #ff69b4;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); }
+            to { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4; }
+        }
+        .question {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease-in-out;
+            min-height: 50px;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+        button {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .result {
+            font-size: 1.5em;
+            margin-top: 20px;
+            animation: popIn 0.5s ease-in-out;
+            min-height: 50px;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .correct {
+            color: #32cd32;
+            font-weight: bold;
+        }
+        .wrong {
+            color: #ff4500;
+        }
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 2em;
+            animation: float 3s linear infinite;
+        }
+        @keyframes float {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff69b4;
+            animation: confettiFall 2s linear infinite;
+        }
+        @keyframes confettiFall {
+            from { transform: translateY(-10px) rotate(0deg); }
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+        .party-popper {
+            position: absolute;
+            font-size: 3em;
+            animation: popperBurst 1s ease-out forwards;
+        }
+        @keyframes popperBurst {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); opacity: 0; }
+        }
+        .progress {
+            margin-bottom: 20px;
+            font-size: 1em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="new1.mp3" type="audio/mpeg">
+    </audio>
+    <div class="intro">
+        <div class="letter-box">
+            <div class="letter" style="--x: -100px; --y: -50px;">G</div>
+            <div class="letter" style="--x: -50px; --y: -60px;">I</div>
+            <div class="letter" style="--x: 0px; --y: -70px;">R</div>
+            <div class="letter" style="--x: 50px; --y: -60px;">L</div>
+            <div class="letter" style="--x: 100px; --y: -50px;">I</div>
+            <div class="letter" style="--x: -80px; --y: 0px;">S</div>
+            <div class="letter" style="--x: -30px; --y: 10px;">H</div>
+            <div class="letter" style="--x: 30px; --y: 10px;">Q</div>
+            <div class="letter" style="--x: 80px; --y: 0px;">U</div>
+            <div class="letter" style="--x: 0px; --y: 50px;">I</div>
+            <div class="letter" style="--x: 0px; --y: 70px;">Z</div>
+        </div>
+    </div>
+    <div class="hearts" id="hearts"></div>
+    <div class="app-container" id="app">
+        <h1>💖 Ankita Please answers the question 💖</h1>
+        <div class="progress" id="progress">Question 1 of 20</div>
+        <div class="question" id="question">Who is the most beautiful girl in the world?</div>
+        <input type="text" id="answer" placeholder="Type your answer here...">
+        <button onclick="checkAnswer()">Submit Answer</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            "Who is the most beautiful girl in the world?",
+            "Who has the prettiest smile?",
+            "Who is the kindest girl ever?",
+            "Who is the smartest girl around?",
+            "Who has the most amazing eyes?",
+            "Who is the funniest girl?",
+            "Who is the most talented girl?",
+            "Who has the best fashion sense?",
+            "Who is the most caring girl?",
+            "Who is the most adventurous girl?",
+            "Who has the sweetest voice?",
+            "Who is the most creative girl?",
+            "Who is the most graceful girl?",
+            "Who has the most beautiful hair?",
+            "Who is the most charming girl?",
+            "Who is the most inspiring girl?",
+            "Who has the most positive energy?",
+            "Who is the most loyal friend?",
+            "Who is the most amazing dancer?",
+            "Who is the most wonderful person?"
+        ];
+
+        let currentQuestion = 0;
+        const answerInput = document.getElementById('answer');
+        const resultDiv = document.getElementById('result');
+        const questionDiv = document.getElementById('question');
+        const progressDiv = document.getElementById('progress');
+        const appContainer = document.getElementById('app');
+        const intro = document.querySelector('.intro');
+
+        // Start quiz after intro animation
+        setTimeout(() => {
+            intro.style.display = 'none';
+            appContainer.style.display = 'block';
+        }, 4000); // Adjust timing based on animation
+
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            if (userAnswer === 'ankita') {
+                // Correct: Show congratulation and party popper animation
+                resultDiv.innerHTML = '<span class="correct">🎉 Congratulations! 🎉</span>';
+                createPartyPopper();
+                createConfetti();
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1500); // Delay for animation
+            } else {
+                resultDiv.innerHTML = '<span class="wrong">❌ Wrong! Try again! ❌</span>';
+            }
+            answerInput.value = '';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                questionDiv.textContent = questions[currentQuestion];
+                progressDiv.textContent = `Question ${currentQuestion + 1} of 20`;
+                resultDiv.innerHTML = '';
+                // Add slide animation to question
+                questionDiv.style.animation = 'none';
+                setTimeout(() => {
+                    questionDiv.style.animation = 'slideIn 0.5s ease-in-out';
+                }, 10);
+            } else {
+                questionDiv.textContent = "Quiz Complete! Ankita is the best! 💖";
+                progressDiv.textContent = "";
+                resultDiv.innerHTML = '<span class="correct">🎊 You finished the quiz! 🎊</span>';
+                document.querySelector('button[onclick="checkAnswer()"]').style.display = 'none';
+            }
+        }
+
+        function createConfetti() {
+            const container = document.querySelector('.app-container');
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffc0cb'][Math.floor(Math.random() * 4)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        function createPartyPopper() {
+            const container = document.querySelector('.app-container');
+            for (let i = 0; i < 5; i++) {
+                const popper = document.createElement('div');
+                popper.className = 'party-popper';
+                popper.textContent = '🎉';
+                popper.style.left = Math.random() * 80 + 10 + '%';
+                popper.style.top = Math.random() * 50 + 20 + '%';
+                popper.style.animationDelay = Math.random() * 0.5 + 's';
+                container.appendChild(popper);
+                setTimeout(() => popper.remove(), 1000);
+            }
+        }
+
+        // Initial setup
+        questionDiv.textContent = questions[0];
+
+        const bgMusic = document.getElementById("bgMusic");
+        bgMusic.volume = 0.5; // 50% volume
+
+        // Start music after intro animation
+        setTimeout(() => {
+            bgMusic.play().catch(() => {
+                // If autoplay is blocked, play on first user interaction
+                window.addEventListener("click", () => {
+                    bgMusic.play();
+                }, { once: true });
+            });
+        }, 4000);
+    </script>
+</body>
+</html>
