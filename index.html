@@ -320,10 +320,9 @@
         questionDiv.textContent = questions[0];
 
         const bgMusic = document.getElementById("bgMusic");
-        bgMusic.volume = 0.5; // 50% volume
+bgMusic.volume = 0.5;
 
-        // Start music after intro animation
-        // Mobile Friendly Music Start
+// Mobile ke liye direct click pe music
 document.addEventListener("click", function startMusic() {
     bgMusic.play();
     document.removeEventListener("click", startMusic);
@@ -333,3 +332,4 @@ document.addEventListener("click", function startMusic() {
 </body>
 
 </html>
+
